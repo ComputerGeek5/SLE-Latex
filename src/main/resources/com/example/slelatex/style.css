@@ -1,0 +1,4 @@
+.main {
+    -fx-background-image: url("img/background.jpg");
+    -fx-background-size: 100% 100%;
+}
