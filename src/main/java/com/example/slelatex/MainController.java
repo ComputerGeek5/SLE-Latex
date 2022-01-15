@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 public class MainController {
     @FXML
@@ -35,14 +36,16 @@ public class MainController {
         }
     }
 
-    private void executePythonScript(String numberOfSolutions) throws IOException {
+    private void executePythonScript(String numberOfSolutions) throws IOException, InterruptedException {
+        String scriptCommand ="python";
         String scriptLocation = System.getProperty("user.dir") + "\\System_of_Linear_Equations.py";
         ProcessBuilder executeScript = new ProcessBuilder(
-                "python",
-                scriptLocation,
+                scriptCommand,
+                "\"" + scriptLocation + "\"",
                 numberOfSolutions
         );
         Process process = executeScript.start();
+        TimeUnit.SECONDS.sleep(1);
 
         BufferedReader processError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
@@ -60,27 +63,39 @@ public class MainController {
         solution.setText(result);
     }
 
-    private void convertLatexToPDF() throws IOException {
-        String texCommand = "C:\\Users\\Erart\\AppData\\Local\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe";
+    private void convertLatexToPDF() throws IOException, InterruptedException {
+        String pdfLocation = System.getProperty("user.dir") + "\\Matrix.pdf";
+
+        File pdfFile = new File(pdfLocation);
+        boolean pdfExists = pdfFile.exists();
+        if (pdfExists) {
+            pdfFile.delete();
+            TimeUnit.SECONDS.sleep(1);
+        }
+
+
+        String texCommand = "pdflatex";
         String texLocation = System.getProperty("user.dir") + "\\Matrix.tex";
         ProcessBuilder convertToLatex = new ProcessBuilder(
                 texCommand,
-                texLocation
+                "\"" + texLocation + "\""
         );
 
         boolean texExists = new File(texLocation).exists();
         if (texExists) {
             convertToLatex.start();
+            TimeUnit.SECONDS.sleep(1);
         }
     }
 
-    private void openPDF() throws IOException {
+    private void openPDF() throws IOException, InterruptedException {
         String pdfLocation = System.getProperty("user.dir") + "\\Matrix.pdf";
         File pdfFile = new File(pdfLocation);
 
         boolean pdfExists = pdfFile.exists();
         if (pdfExists) {
             Desktop.getDesktop().open(pdfFile);
+            TimeUnit.SECONDS.sleep(1);
         }
     }
 
@@ -88,7 +103,7 @@ public class MainController {
     public void open(ActionEvent event) throws IOException {
         try {
             openPDF();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             solution.setStyle("-fx-text-fill: #ff0000;");
             solution.setText("Could open solution. Something went wrong!");
