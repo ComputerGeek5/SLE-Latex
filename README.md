@@ -1,5 +1,7 @@
 # SLE-Latex
 
+![1](https://github.com/ComputerGeek5/SLE-Latex/assets/78569367/15ef9150-36cd-42eb-84a1-cc08dc9d7454)
+
 This repository contains an application that studies Systems of Linear Equations involving unimodular matrices. The application's graphical user interface (GUI) is developed using JavaFX SDK, while the main logic of the application is implemented in a Python script. Additionally, the results of the computations are presented in a clear and visible manner using the LaTeX typesetting system, generating a PDF file.
 
 ## Introduction
